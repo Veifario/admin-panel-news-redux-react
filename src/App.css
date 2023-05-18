@@ -1,0 +1,23 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+	--cream: #e1d7c6;
+	--blue: #579bb1;
+	--lightCream: #ece8dd;
+	--lighterCream: #f8f4ea;
+}
+
+.App {
+	display: grid;
+	grid-template-columns: 2fr 1fr;
+	align-items: start;
+	gap: 20px;
+
+	padding: 40px;
+}
