@@ -1,11 +1,19 @@
+import axios from "axios";
 import React from "react";
+import { useDispatch } from "react-redux";
 import { deleteDataRequest } from "../../api/deleteRequest";
 import { postDelete } from "../../redux/actions";
 import s from "./post.module.scss";
 
 const Post = ({ title, text, date, id }) => {
+	const dispatch = useDispatch();
+
 	
-	const deletePost = () => {};
+
+	const deletePost = () => {
+		deleteDataRequest(id)
+		dispatch(postDelete(id));
+	};
 
 	return (
 		<div className={s.root}>

@@ -1,4 +1,4 @@
-const initialState = { postList: [], loadingStatus: "", errorMessage: "" };
+const initialState = { postList: [], loadingStatus: "idle" };
 
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
@@ -16,14 +16,18 @@ const reducer = (state = initialState, action) => {
 		case "POSTS_FETCHING_ERROR":
 			return {
 				...state,
-				errorMessage: action.payload,
 				loadingStatus: "error",
 			};
 		case "POST_ADD":
-			return { ...state, postList: action.payload, loadingStatus: "loaded" };
-
+			return {
+				...state,
+				postList: [...state.postList, action.payload],
+			};
 		case "POST_DELETE":
-
+			return {
+				...state,
+				postList: state.postList.filter((post) => post.id !== action.payload),
+			};
 		default:
 			return state;
 	}

@@ -1,12 +1,13 @@
+import axios from "axios";
 import React, { useState } from "react";
-import s from "./addpanel.module.scss";
+import { useDispatch } from "react-redux";
 import { v4 as uniqueId } from "uuid";
-import { addPostRequest } from "../../api/postRequest";
-import { useDispatch, useSelector } from "react-redux";
-import { addPost, request, requestError } from "../../redux/actions";
+import { postDataRequest } from "../../api/postRequest";
+import { postAdd } from "../../redux/actions";
+import { getDateFromString } from "../../utils";
+import s from "./addpanel.module.scss";
 
 const AddPanel = () => {
-	const posts = useSelector((state) => state.postList);
 	const dispatch = useDispatch();
 	const [inputValue, setInputValue] = useState({
 		title: "",
@@ -14,22 +15,15 @@ const AddPanel = () => {
 		date: "",
 	});
 
-	const addNewPost = async () => {
+	const addNewPost = () => {
 		const newPost = {
 			id: uniqueId(),
 			title: inputValue.title,
 			body: inputValue.text,
-			date: inputValue.date,
+			date: getDateFromString(inputValue.date),
 		};
-		const updatedPosts = [...posts, newPost];
-		try {
-			dispatch(request());
-			await addPostRequest(newPost);
-			dispatch(addPost(updatedPosts));
-		} catch ({ message }) {
-			dispatch(requestError(message));
-		}
-		setInputValue({ ...inputValue, title: "", text: "", date: "" });
+		postDataRequest(newPost);
+		dispatch(postAdd(newPost));
 	};
 
 	return (

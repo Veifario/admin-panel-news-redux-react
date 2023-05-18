@@ -1,13 +1,5 @@
-export const request = () => ({
-	type: "POSTS_FETCHING",
-});
-export const requestDone = (data) => ({
-	type: "POSTS_FETCHED",
-	payload: data,
-});
-export const requestError = (message) => ({
-	type: "POSTS_FETCHING_ERROR",
-	payload: message,
-});
-
-export const addPost = (data) => ({ type: "POST_ADD", payload: data });
+export const postFetching = () => ({ type: "POSTS_FETCHING" });
+export const postFetched = (data) => ({ type: "POSTS_FETCHED", payload: data });
+export const postFetchingError = () => ({ type: "POSTS_FETCHING_ERROR" });
+export const postAdd = (newData) => ({ type: "POST_ADD", payload: newData });
+export const postDelete = (id) => ({ type: "POST_DELETE", payload: id });

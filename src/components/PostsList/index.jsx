@@ -1,30 +1,35 @@
+import axios from "axios";
 import React, { useEffect } from "react";
 import s from "./postlist.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-
+import {
+	postFetched,
+	postFetching,
+	postFetchingError,
+} from "../../redux/actions";
 import Post from "../Post";
-import { getPosts } from "../../api/getRequest";
-import { request, requestDone, requestError } from "../../redux/actions";
 
 const PostsList = () => {
+	const loadingStatus = useSelector((state) => state.loadingStatus);
 	const posts = useSelector((state) => state.postList);
-	const status = useSelector((state) => state.loadingStatus);
-	const errorMessage = useSelector((state) => state.errorMessage);
 	const dispatch = useDispatch();
 
 	const fetchPosts = async () => {
+		dispatch(postFetching());
 		try {
-			dispatch(request());
-			const data = await getPosts();
-			dispatch(requestDone(data));
-		} catch ({ message }) {
-			dispatch(requestError(message));
+			const response = await axios.get("http://localhost:3001/posts");
+			dispatch(postFetched(response.data));
+		} catch (error) {
+			dispatch(postFetchingError());
 		}
 	};
 
 	useEffect(() => {
 		fetchPosts();
 	}, []);
+
+	if (loadingStatus === "loading") return <div>Loading...</div>;
+	else if (loadingStatus === "error") return <h1>Eroor</h1>;
 
 	const displayPosts = () =>
 		posts.map((post) => (
@@ -37,13 +42,7 @@ const PostsList = () => {
 			/>
 		));
 
-	return status === "loading" ? (
-		<b>Loadin...</b>
-	) : status === "error" ? (
-		<b>{errorMessage}</b>
-	) : (
-		<div className={s.root}>{displayPosts()}</div>
-	);
+	return <div className={s.root}>{displayPosts()}</div>;
 };
 
 export default PostsList;

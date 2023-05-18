@@ -1,5 +1,5 @@
 import axios from "axios";
 
-export const addPostRequest = async (newPost) => {
-	await axios.post("http://localhost:3001/posts", newPost);
+export const postDataRequest = async (newData) => {
+    const response = await axios.post("http://localhost:3001/posts", newData);
 };
